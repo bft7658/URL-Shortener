@@ -18,12 +18,20 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
+app.use(express.urlencoded({ extended: true }))
 
 
 app.get('/', (req, res) => {
   res.render('index')
 })
 
+app.post('/success', (req, res) => {
+  res.render('success')
+})
+
+app.get('/error', (req, res) => {
+  res.render('error')
+})
 
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
