@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const generateShortURL = require('./utils/generateShortUrl')
 
 
 const app = express()
@@ -22,11 +23,18 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.get('/', (req, res) => {
+  console.log(generateShortURL(5))
   res.render('index')
 })
 
-app.post('/success', (req, res) => {
-  res.render('success')
+app.post('/', (req, res) => {
+  const shortURL = req.body.url.trim()
+  res.render('success', { shortURL })
+})
+
+app.get('/:shorten', (req, res) => {
+  const shortName = req.params.shorten
+  console.log(`${shortName}`)
 })
 
 app.get('/error', (req, res) => {
