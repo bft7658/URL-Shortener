@@ -1,10 +1,6 @@
-// function sample(array) {
-//   let randomIndex = Math.floor(Math.random() * array.length)
-//   return array[randomIndex]
-// }
-
 function generateShortURL(num) {
   const words = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  // const words = 'a1' // 測試用
   // 將字串轉成陣列
   let Words = []
   Words = Words.concat(...words)
