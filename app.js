@@ -30,21 +30,34 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   const mainUrl = 'http://localhost:3000/'
   const originUrl = req.body.url.trim()
-  URL.findOne({ originUrl: originUrl })
+  URL.findOne({ originUrl })
     .lean()
     .then((url) => {
-      if (!url) {
+      if (url) {
+        shortUrl = url.shortUrl
+      } else {
         shortUrl = generateShortURL(5)
-        URL.create({
-          originUrl,
-          shortUrl,
-        })
-          .then(() => res.render('success', { shortURL: mainUrl + shortUrl }))
-          .catch((error) => console.log(error))
+        URL.findOne({ shortUrl })
+          .lean()
+          .then((url) => {
+            if (!url) {
+              URL.create({
+                originUrl,
+                shortUrl
+              }) 
+            } 
+            // 這裡想設計
+            // 1. 資料庫已存在短網址，重新產生一組使用
+            // 2. 如果亂數都配對完了，該如何提醒使用者，雖然機率很低
+            // else {
+            //   shortUrl = generateShortURL(5)
+            //   res.redirect('/error')
+            // }  
+          })
       }
-      else {
-        res.render('success', { shortURL: mainUrl + url.shortUrl })
-      }
+    })
+    .then(() => {
+      res.render('success', { shortURL: mainUrl + shortUrl })
     })
     .catch((error) => console.log(error))
 })
